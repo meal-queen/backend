@@ -3,7 +3,7 @@ package com.threlease.base.functions.company;
 import com.threlease.base.entities.AuthEntity;
 import com.threlease.base.entities.CompanyConnectEntity;
 import com.threlease.base.entities.CompanyEntity;
-import com.threlease.base.entities.PayLogEntity;
+import com.threlease.base.entities.OrderEntity;
 import com.threlease.base.enums.AffiliationUserRoles;
 import com.threlease.base.enums.UserRoles;
 import com.threlease.base.functions.auth.AuthService;
@@ -684,7 +684,7 @@ public class CompanyController {
                             (companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ADMIN ||
                                     companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ROOT)
             ) {
-                Page<PayLogEntity> logs =
+                Page<OrderEntity> logs =
                         payService.findByCompanyPagination(
                                 PageRequest.of(
                                         dto.getPage(), dto.getTake()

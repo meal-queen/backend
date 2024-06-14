@@ -1,6 +1,6 @@
 package com.threlease.base.entities;
 
-import com.threlease.base.enums.PayStatus;
+import com.threlease.base.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class PayLogEntity {
+public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(length = 36, nullable = false)
@@ -38,7 +38,7 @@ public class PayLogEntity {
     private long point;
 
     @Enumerated(EnumType.STRING)
-    private PayStatus status;
+    private OrderStatus status;
 
     @CreatedDate
     private LocalDateTime createdAt;

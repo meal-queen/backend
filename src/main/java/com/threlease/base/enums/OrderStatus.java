@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum PayStatus {
+public enum OrderStatus {
     FAIL, WAIT, SUCCESS
 }

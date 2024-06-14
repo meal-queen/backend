@@ -1,7 +1,7 @@
 package com.threlease.base.functions.pay;
 
 import com.threlease.base.entities.*;
-import com.threlease.base.enums.PayStatus;
+import com.threlease.base.enums.OrderStatus;
 import com.threlease.base.functions.auth.AuthService;
 import com.threlease.base.functions.company.CompanyService;
 import com.threlease.base.functions.pay.dto.PayDto;
@@ -73,9 +73,9 @@ public class PayController {
         if (restaurant.isPresent()) {
             connect.get().setPoint(connect.get().getPoint() - dto.getPoint());
 
-            PayLogEntity pay = PayLogEntity.builder()
+            OrderEntity pay = OrderEntity.builder()
                     .company(company.get())
-                    .status(PayStatus.WAIT)
+                    .status(OrderStatus.WAIT)
                     .author(user.get())
                     .point(dto.getPoint())
                     .createdAt(LocalDateTime.now())

@@ -2,9 +2,9 @@ package com.threlease.base.functions.pay;
 
 import com.threlease.base.entities.AuthEntity;
 import com.threlease.base.entities.CompanyEntity;
-import com.threlease.base.entities.PayLogEntity;
+import com.threlease.base.entities.OrderEntity;
 import com.threlease.base.entities.RestaurantEntity;
-import com.threlease.base.repositories.PayLogRepository;
+import com.threlease.base.repositories.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,29 +15,29 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class PayService {
-    private final PayLogRepository payLogRepository;
+    private final OrderRepository payLogRepository;
 
-    public void save(PayLogEntity data) {
+    public void save(OrderEntity data) {
         payLogRepository.save(data);
     }
 
-    public void remove(PayLogEntity data) {
+    public void remove(OrderEntity data) {
         payLogRepository.delete(data);
     }
 
-    public Optional<PayLogEntity> findOneByUuid(String uuid) {
+    public Optional<OrderEntity> findOneByUuid(String uuid) {
         return payLogRepository.findOneByUuid(uuid);
     }
 
-    public Page<PayLogEntity> findByAuthorPagination(Pageable pageable, AuthEntity author) {
+    public Page<OrderEntity> findByAuthorPagination(Pageable pageable, AuthEntity author) {
         return payLogRepository.findByAuthorPagination(pageable, author);
     }
 
-    public Page<PayLogEntity> findByCompanyPagination(Pageable pageable, CompanyEntity company) {
+    public Page<OrderEntity> findByCompanyPagination(Pageable pageable, CompanyEntity company) {
         return payLogRepository.findByCompanyPagination(pageable, company);
     }
 
-    public Page<PayLogEntity> findByRestaurantPagination(Pageable pageable, RestaurantEntity restaurant) {
+    public Page<OrderEntity> findByRestaurantPagination(Pageable pageable, RestaurantEntity restaurant) {
         return payLogRepository.findByRestaurantPagination(pageable, restaurant);
     }
 }

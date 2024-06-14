@@ -16,6 +16,8 @@ public class Messages {
 
     public final static String NOT_FOUND_RESTAURANT = "해당 가맹점을 찾을 수 없습니다.";
 
+    public final static String NOT_FOUND_ORDER = "해당 주문을 찾을 수 없습니다.";
+
     public final static String BAD_REQUEST_LOGIN = "아이디 혹은 비밀번호를 확인해주세요.";
 
     public final static String BAD_REQUEST = "정상적인 접근이 아닙니다.";

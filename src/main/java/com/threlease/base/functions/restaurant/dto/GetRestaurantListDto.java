@@ -5,21 +5,15 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
-import java.util.Optional;
-
 @Getter
-public class GetRestaurnatList {
-    Optional<String> address;
-
-    Optional<String> search;
-
+public class GetRestaurantListDto {
     @NotEmpty
-    @NotNull
     @NotBlank
+    @NotNull
     private int page;
 
     @NotEmpty
-    @NotNull
     @NotBlank
+    @NotNull
     private int take;
 }
