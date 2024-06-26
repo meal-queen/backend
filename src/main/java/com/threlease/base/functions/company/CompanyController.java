@@ -544,10 +544,10 @@ public class CompanyController {
         );
     }
 
-    @GetMapping("/")
+    @GetMapping("/{uuid}")
     @Operation(summary = "회사 정보", description = "회사 정보 GET")
     private ResponseEntity<BasicResponse> getCompany(
-            @ParameterObject @RequestParam @Valid GetCompanyDto dto,
+            @PathVariable("uuid") String uuid,
             @RequestHeader("Authorization") String token
     ) {
         Optional<AuthEntity> user = authService.findOneByToken(token);
@@ -561,7 +561,7 @@ public class CompanyController {
                             .build()
             );
 
-        Optional<CompanyEntity> company = companyService.findOneByUuid(dto.getCompany());
+        Optional<CompanyEntity> company = companyService.findOneByUuid(uuid);
         return company.map(companyEntity -> ResponseEntity.status(200).body(
                 BasicResponse.builder()
                         .success(true)
@@ -574,6 +574,40 @@ public class CompanyController {
                         .data(Optional.empty())
                         .build()
         ));
+    }
+
+    @GetMapping("/")
+    @Operation(summary = "회사 정보", description = "회사 정보 GET")
+    private ResponseEntity<BasicResponse> getCompanys(
+            @RequestParam("page") int page,
+            @RequestParam("take") int take,
+            @RequestHeader("Authorization") String token
+    ) {
+        Optional<AuthEntity> user = authService.findOneByToken(token);
+
+        if (user.isEmpty())
+            return ResponseEntity.status(403).body(
+                    BasicResponse.builder()
+                            .success(false)
+                            .message(Optional.of(Messages.ERROR_SESSION))
+                            .data(Optional.empty())
+                            .build()
+            );
+
+        if (user.get().getRole() != UserRoles.ROLE_ADMIN)
+            return ResponseEntity.status(401).body(
+                    BasicResponse.builder()
+                            .success(false)
+                            .message(Optional.of(Messages.NOT_PERMISSION))
+                            .build()
+            );
+
+        return ResponseEntity.status(200).body(
+                BasicResponse.builder()
+                        .success(true)
+                        .data(Optional.of(companyService.findByPagination(PageRequest.of(page, take))))
+                        .build()
+        );
     }
 
     @GetMapping("/users")
