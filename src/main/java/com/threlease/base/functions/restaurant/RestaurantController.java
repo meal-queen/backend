@@ -86,7 +86,7 @@ public class RestaurantController {
     @GetMapping("/search")
     @Operation(summary = "가맹점 검색 혹은 리스트 가져오기")
     private ResponseEntity<BasicResponse> getRestaurantSearchList(
-            @ParameterObject @Valid @RequestParam GetRestaurantSearchListDto dto
+            @ParameterObject @ModelAttribute @Valid GetRestaurantSearchListDto dto
     ) {
         return ResponseEntity.status(200).body(
                 BasicResponse.builder()

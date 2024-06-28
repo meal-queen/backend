@@ -47,7 +47,7 @@ public class CompanyController {
     @GetMapping("/codeby")
     @Operation(summary = "가입 코드로 회사 정보 가져오기")
     private ResponseEntity<BasicResponse> findByCode(
-            @ParameterObject @RequestParam @Valid FindByCodeDto dto
+            @ParameterObject @ModelAttribute @Valid FindByCodeDto dto
     ) {
         Optional<CompanyEntity> company = companyService.findOneByInviteCode(dto.getCode());
 
@@ -613,7 +613,7 @@ public class CompanyController {
     @GetMapping("/users")
     @Operation(summary = "회사 내 유저 확인", description = "회사 내 유저 정보 확인")
     private ResponseEntity<BasicResponse> getUsers(
-            @ParameterObject @RequestParam @Valid GetUsersDto dto,
+            @ParameterObject @ModelAttribute @Valid GetUsersDto dto,
             @RequestParam("page") int page,
             @RequestParam("take") int take,
             @RequestHeader("Authorization") String token
@@ -696,7 +696,7 @@ public class CompanyController {
     @GetMapping("/pay/logs")
     @Operation(summary = "결제 정보", description = "회사 내 유저 결제 정보 확인")
     private ResponseEntity<BasicResponse> getLogs(
-            @ParameterObject @RequestParam @Valid GetLogsDto dto,
+            @ModelAttribute @Valid GetLogsDto dto,
             @RequestParam("page") int page,
             @RequestParam("take") int take,
             @RequestHeader("Authorization") String token
