@@ -16,16 +16,6 @@ public class GetUsersDto {
     @UUID
     private String company;
 
-    @NotEmpty
-    @NotBlank
-    @NotNull
-    private int take;
-
-    @NotEmpty
-    @NotBlank
-    @NotNull
-    private int page;
-
     @Enumeration(enumClass = AffiliationUserRoles.class, optional = true)
     private AffiliationUserRoles role;
 }

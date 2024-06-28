@@ -7,7 +7,6 @@ import com.threlease.base.enums.OrderStatus;
 import com.threlease.base.functions.auth.AuthService;
 import com.threlease.base.functions.pay.PayService;
 import com.threlease.base.functions.restaurant.dto.CheckPayDto;
-import com.threlease.base.functions.restaurant.dto.GetRestaurantListDto;
 import com.threlease.base.functions.restaurant.dto.GetRestaurantPayLogDto;
 import com.threlease.base.functions.restaurant.dto.GetRestaurantSearchListDto;
 import com.threlease.base.utils.responses.BasicResponse;
@@ -69,14 +68,15 @@ public class RestaurantController {
     @GetMapping("/")
     @Operation(summary = "가맹점")
     private ResponseEntity<BasicResponse> getRestaurnatList(
-            @ParameterObject @Valid @RequestParam GetRestaurantListDto dto
+            @RequestParam("page") int page,
+            @RequestParam("take") int take
     ) {
         return ResponseEntity.status(200).body(
                 BasicResponse.builder()
                         .success(true)
                         .data(Optional.of(
                                 restaurantService.findByPagination(
-                                        PageRequest.of(dto.getPage(), dto.getTake())
+                                        PageRequest.of(page, take)
                                 )
                         ))
                         .build()
@@ -107,6 +107,8 @@ public class RestaurantController {
     @Operation(summary = "가맹점 내 결제 정보", description = "가맹점 결제 정보")
     private ResponseEntity<BasicResponse> getRestaurantPayLog(
             @ParameterObject @Valid @RequestParam GetRestaurantPayLogDto dto,
+            @RequestParam("page") int page,
+            @RequestParam("take") int take,
             @RequestHeader("Authorization") String token
     ) {
         Optional<AuthEntity> user = authService.findOneByToken(token);
@@ -137,7 +139,7 @@ public class RestaurantController {
                             .build()
             );
 
-        Page<OrderEntity> logs = payService.findByRestaurantPagination(PageRequest.of(dto.getPage(), dto.getTake()), restaurant.get());
+        Page<OrderEntity> logs = payService.findByRestaurantPagination(PageRequest.of(page, take), restaurant.get());
 
         return ResponseEntity.status(200).body(
                 BasicResponse.builder()

@@ -13,14 +13,4 @@ public class GetRestaurantPayLogDto {
     @NotNull
     @NotBlank
     private String restaurant;
-
-    @NotEmpty
-    @NotNull
-    @NotBlank
-    private int page;
-
-    @NotEmpty
-    @NotNull
-    @NotBlank
-    private int take;
 }

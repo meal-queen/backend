@@ -614,6 +614,8 @@ public class CompanyController {
     @Operation(summary = "회사 내 유저 확인", description = "회사 내 유저 정보 확인")
     private ResponseEntity<BasicResponse> getUsers(
             @ParameterObject @RequestParam @Valid GetUsersDto dto,
+            @RequestParam("page") int page,
+            @RequestParam("take") int take,
             @RequestHeader("Authorization") String token
     ) {
         Optional<AuthEntity> user = authService.findOneByToken(token);
@@ -641,8 +643,9 @@ public class CompanyController {
                 Page<CompanyConnectEntity> users =
                         companyService.findOneByConnectCompanyPagination(
                                 PageRequest.of(
-                                        dto.getPage(),
-                                        dto.getTake()),
+                                        page,
+                                        take
+                                ),
                                         company.get()
                         );
 
@@ -694,6 +697,8 @@ public class CompanyController {
     @Operation(summary = "결제 정보", description = "회사 내 유저 결제 정보 확인")
     private ResponseEntity<BasicResponse> getLogs(
             @ParameterObject @RequestParam @Valid GetLogsDto dto,
+            @RequestParam("page") int page,
+            @RequestParam("take") int take,
             @RequestHeader("Authorization") String token
     ) {
         Optional<AuthEntity> user = authService.findOneByToken(token);
@@ -721,7 +726,7 @@ public class CompanyController {
                 Page<OrderEntity> logs =
                         payService.findByCompanyPagination(
                                 PageRequest.of(
-                                        dto.getPage(), dto.getTake()
+                                        page, take
                                 ),
                                 company.get()
                         );
