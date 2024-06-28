@@ -637,7 +637,9 @@ public class CompanyController {
 
             if (
                     companyConnect.isPresent() &&
-                            (companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ADMIN ||
+                            (
+                                    user.get().getRole() == UserRoles.ROLE_ADMIN ||
+                                    companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ADMIN ||
                                     companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ROOT)
             ) {
                 Page<CompanyConnectEntity> users =
@@ -720,7 +722,8 @@ public class CompanyController {
 
             if (
                     companyConnect.isPresent() &&
-                            (companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ADMIN ||
+                            (user.get().getRole() == UserRoles.ROLE_ADMIN ||
+                                    companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ADMIN ||
                                     companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ROOT)
             ) {
                 Page<OrderEntity> logs =
