@@ -13,7 +13,6 @@ public class GetUsersDto {
     @NotEmpty
     @NotBlank
     @NotNull
-    @UUID
     private String company;
 
     @Enumeration(enumClass = AffiliationUserRoles.class, optional = true)

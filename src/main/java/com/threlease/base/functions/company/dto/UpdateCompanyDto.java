@@ -15,7 +15,6 @@ public class UpdateCompanyDto {
     @NotEmpty
     @NotBlank
     @NotNull
-    @UUID
     private String company;
 
     private Optional<String> bizNumber;

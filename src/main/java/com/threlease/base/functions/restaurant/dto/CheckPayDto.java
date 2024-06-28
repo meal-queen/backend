@@ -10,13 +10,11 @@ import org.hibernate.validator.constraints.UUID;
 
 @Data
 public class CheckPayDto {
-    @UUID
     @NotEmpty
     @NotNull
     @NotBlank
     private String restaurant;
 
-    @UUID
     @NotEmpty
     @NotNull
     @NotBlank

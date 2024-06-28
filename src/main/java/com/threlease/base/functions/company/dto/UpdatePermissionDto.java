@@ -13,13 +13,11 @@ public class UpdatePermissionDto {
     @NotEmpty
     @NotBlank
     @NotNull
-    @UUID
     private String company;
 
     @NotEmpty
     @NotBlank
     @NotNull
-    @UUID
     private String author;
 
     @Enumeration(enumClass = AffiliationUserRoles.class)

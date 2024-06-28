@@ -11,13 +11,11 @@ public class PayDto {
     @NotEmpty
     @NotBlank
     @NotNull
-    @UUID
     private String company;
 
     @NotEmpty
     @NotBlank
     @NotNull
-    @UUID
     private String restaurant;
 
     @NotEmpty

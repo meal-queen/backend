@@ -11,6 +11,5 @@ public class GetLogsDto {
     @NotEmpty
     @NotBlank
     @NotNull
-    @UUID
     private String company;
 }

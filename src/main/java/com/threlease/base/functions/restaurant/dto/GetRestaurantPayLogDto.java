@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.UUID;
 
 @Data
 public class GetRestaurantPayLogDto {
-    @UUID
     @NotEmpty
     @NotNull
     @NotBlank
