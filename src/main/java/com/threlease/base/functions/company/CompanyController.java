@@ -347,7 +347,7 @@ public class CompanyController {
 
         Optional<CompanyConnectEntity> connect = companyService.findOneByConnectAuthor(company.get(), user.get());
 
-        if (connect.isEmpty() && user.get().getRole() != UserRoles.ROLE_ADMIN)
+        if (connect.isEmpty())
             return ResponseEntity.status(404).body(
                     BasicResponse.builder()
                             .success(false)
@@ -355,13 +355,7 @@ public class CompanyController {
                             .build()
             );
 
-        if (
-                connect.isEmpty() ||
-                (
-                        connect.get().getRole() != AffiliationUserRoles.ROLE_ROOT &&
-                        user.get().getRole() != UserRoles.ROLE_ADMIN
-                )
-        )
+        if (connect.get().getRole() != AffiliationUserRoles.ROLE_ROOT)
             return ResponseEntity.status(401).body(
                     BasicResponse.builder()
                             .success(false)
@@ -634,67 +628,67 @@ public class CompanyController {
 
         Optional<CompanyEntity> company = companyService.findOneByUuid(dto.getCompany());
 
-        if (company.isPresent()) {
-            Optional<CompanyConnectEntity> companyConnect =
-                    companyService.findOneByConnectAuthor(company.get(), user.get());
+        if (company.isEmpty())
+            return ResponseEntity.status(404).body(
+                    BasicResponse.builder()
+                            .success(false)
+                            .message(Optional.of(Messages.NOT_FOUND_COMPANY))
+                            .build()
+            );
 
-            if (
-                    (companyConnect.isPresent() || user.get().getRole() == UserRoles.ROLE_ADMIN) &&
-                            (
-                                    companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ADMIN ||
-                                    companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ROOT)
-            ) {
-                Page<CompanyConnectEntity> users =
-                        companyService.findOneByConnectCompanyPagination(
-                                PageRequest.of(
-                                        page,
-                                        take
-                                ),
-                                        company.get()
-                        );
+        Optional<CompanyConnectEntity> companyConnect =
+                companyService.findOneByConnectAuthor(company.get(), user.get());
 
-                if (dto.getRole() != null) {
-
-                    return ResponseEntity.status(200).body(
-                            BasicResponse.builder()
-                                    .success(true)
-                                    .data(
-                                            Optional.of(
-                                                users.stream()
-                                                        .filter((v) -> v.getRole() == dto.getRole())
-                                                        .peek((v) -> {
-                                                            v.getAuthor().setSalt(null);
-                                                            v.getAuthor().setPassword(null);
-                                                        }
-                                                ).toList()
-                                            )
-                                    )
-                                    .build()
-                    );
-                } else
-                    return ResponseEntity.status(200).body(
-                            BasicResponse.builder()
-                                    .success(true)
-                                    .data(Optional.of(users))
-                                    .build()
+        if (
+                (companyConnect.isPresent() || user.get().getRole() == UserRoles.ROLE_ADMIN) &&
+                        (
+                                companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ADMIN ||
+                                companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ROOT
+                        )
+                )
+        {
+            Page<CompanyConnectEntity> users =
+                    companyService.findOneByConnectCompanyPagination(
+                            PageRequest.of(
+                                    page,
+                                    take
+                            ),
+                                    company.get()
                     );
 
-            } else
-                return ResponseEntity.status(401).body(
+            if (dto.getRole() != null) {
+                return ResponseEntity.status(200).body(
                         BasicResponse.builder()
-                                .success(false)
-                                .message(Optional.of(Messages.NOT_PERMISSION))
+                                .success(true)
+                                .data(
+                                        Optional.of(
+                                            users.stream()
+                                                    .filter((v) -> v.getRole() == dto.getRole())
+                                                    .peek((v) -> {
+                                                        v.getAuthor().setSalt(null);
+                                                        v.getAuthor().setPassword(null);
+                                                    }
+                                            ).toList()
+                                        )
+                                )
+                                .build()
+                );
+            } else
+                return ResponseEntity.status(200).body(
+                        BasicResponse.builder()
+                                .success(true)
+                                .data(Optional.of(users))
                                 .build()
                 );
 
         } else
-            return ResponseEntity.status(403).body(
+            return ResponseEntity.status(401).body(
                     BasicResponse.builder()
                             .success(false)
-                            .message(Optional.of(Messages.NOT_FOUND_COMPANY))
-                            .data(Optional.empty())
+                            .message(Optional.of(Messages.NOT_PERMISSION))
                             .build()
             );
+
     }
 
     @GetMapping("/pay/logs")
