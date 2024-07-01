@@ -116,7 +116,7 @@ public class AuthController {
     @PostMapping("/signup/company")
     @Operation(summary = "회사 회원가입", description = "회원가입과 동시에 회사를 만듬")
     private ResponseEntity<BasicResponse> signUpCompany(
-            @RequestBody @Valid CompanySignUpDto dto
+            @ModelAttribute @Valid CompanySignUpDto dto
     ) {
         Optional<AuthEntity> auth = authService.findOneByUsername(dto.getUsername());
 
