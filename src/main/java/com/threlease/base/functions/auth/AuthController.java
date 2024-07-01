@@ -233,7 +233,7 @@ public class AuthController {
     @PostMapping("/signup/restaurant")
     @Operation(summary = "가맹점 회원가입", description = "회원가입과 동시에 가맹점를 만듬")
     private ResponseEntity<BasicResponse> signUpRestaurant(
-            @RequestBody @Valid RestaurantSignUpDto dto
+            @ModelAttribute @Valid RestaurantSignUpDto dto
     ) {
         Optional<AuthEntity> auth = authService.findOneByUsername(dto.getUsername());
         Optional<RestaurantEntity> restaurant = restaurantService.findOneByBizNumber(dto.getBizNumber());
