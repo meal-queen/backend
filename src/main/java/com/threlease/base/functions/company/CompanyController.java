@@ -639,14 +639,27 @@ public class CompanyController {
         Optional<CompanyConnectEntity> companyConnect =
                 companyService.findOneByConnectAuthor(company.get(), user.get());
 
-        if (
-                (companyConnect.isPresent() || user.get().getRole() == UserRoles.ROLE_ADMIN) &&
-                        (
-                                companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ADMIN ||
-                                companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ROOT
-                        )
-                )
-        {
+        if (user.get().getRole() != UserRoles.ROLE_ADMIN) {
+            if (companyConnect.isEmpty())
+                return ResponseEntity.status(401).body(
+                        BasicResponse.builder()
+                                .success(false)
+                                .message(Optional.of(Messages.NOT_PERMISSION))
+                                .build()
+                );
+
+            if (
+                    companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ADMIN ||
+                    companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ROOT
+            ) {
+                return ResponseEntity.status(401).body(
+                        BasicResponse.builder()
+                                .success(false)
+                                .message(Optional.of(Messages.NOT_PERMISSION))
+                                .build()
+                );
+            }
+        }
             Page<CompanyConnectEntity> users =
                     companyService.findOneByConnectCompanyPagination(
                             PageRequest.of(
@@ -680,14 +693,6 @@ public class CompanyController {
                                 .data(Optional.of(users))
                                 .build()
                 );
-
-        } else
-            return ResponseEntity.status(401).body(
-                    BasicResponse.builder()
-                            .success(false)
-                            .message(Optional.of(Messages.NOT_PERMISSION))
-                            .build()
-            );
 
     }
 
