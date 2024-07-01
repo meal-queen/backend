@@ -356,8 +356,11 @@ public class CompanyController {
             );
 
         if (
-                connect.get().getRole() != AffiliationUserRoles.ROLE_ROOT &&
-                user.get().getRole() != UserRoles.ROLE_ADMIN
+                connect.isEmpty() ||
+                (
+                        connect.get().getRole() != AffiliationUserRoles.ROLE_ROOT &&
+                        user.get().getRole() != UserRoles.ROLE_ADMIN
+                )
         )
             return ResponseEntity.status(401).body(
                     BasicResponse.builder()
