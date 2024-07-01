@@ -636,9 +636,8 @@ public class CompanyController {
                     companyService.findOneByConnectAuthor(company.get(), user.get());
 
             if (
-                    companyConnect.isPresent() &&
+                    (companyConnect.isPresent() || user.get().getRole() == UserRoles.ROLE_ADMIN) &&
                             (
-                                    user.get().getRole() == UserRoles.ROLE_ADMIN ||
                                     companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ADMIN ||
                                     companyConnect.get().getRole() == AffiliationUserRoles.ROLE_ROOT)
             ) {
