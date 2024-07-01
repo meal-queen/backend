@@ -347,7 +347,7 @@ public class CompanyController {
 
         Optional<CompanyConnectEntity> connect = companyService.findOneByConnectAuthor(company.get(), user.get());
 
-        if (connect.isEmpty())
+        if (connect.isEmpty() && user.get().getRole() != UserRoles.ROLE_ADMIN)
             return ResponseEntity.status(404).body(
                     BasicResponse.builder()
                             .success(false)
@@ -417,7 +417,7 @@ public class CompanyController {
             );
 
         Optional<CompanyConnectEntity> connectUser = companyService.findOneByConnectAuthor(company.get(), user.get());
-        if (connectUser.isEmpty())
+        if (connectUser.isEmpty() && user.get().getRole() != UserRoles.ROLE_ADMIN)
             return ResponseEntity.status(401).body(
                     BasicResponse.builder()
                             .success(false)
