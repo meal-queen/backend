@@ -44,7 +44,7 @@ public class AuthController {
     @PostMapping("/login")
     @Operation(summary = "로그인", description = "로그인")
     private ResponseEntity<BasicResponse> login(
-        @ModelAttribute @Valid LoginDto dto
+        @RequestBody @Valid LoginDto dto
     ) {
         Optional<AuthEntity> auth = authService.findOneByUsername(dto.getUsername());
 
@@ -79,7 +79,7 @@ public class AuthController {
     @PostMapping("/signup")
     @Operation(summary = "일반 회원가입", description = "일반 유저 회원가입")
     private ResponseEntity<BasicResponse> signUp(
-            @ModelAttribute @Valid SignUpDto dto
+            @RequestBody @Valid SignUpDto dto
     ) {
         Optional<AuthEntity> auth = authService.findOneByUsername(dto.getUsername());
 
@@ -116,7 +116,7 @@ public class AuthController {
     @PostMapping("/signup/company")
     @Operation(summary = "회사 회원가입", description = "회원가입과 동시에 회사를 만듬")
     private ResponseEntity<BasicResponse> signUpCompany(
-            @ModelAttribute @Valid CompanySignUpDto dto
+            @RequestBody @Valid CompanySignUpDto dto
     ) {
         Optional<AuthEntity> auth = authService.findOneByUsername(dto.getUsername());
 
@@ -233,7 +233,7 @@ public class AuthController {
     @PostMapping("/signup/restaurant")
     @Operation(summary = "가맹점 회원가입", description = "회원가입과 동시에 가맹점를 만듬")
     private ResponseEntity<BasicResponse> signUpRestaurant(
-            @ModelAttribute @Valid RestaurantSignUpDto dto
+            @RequestBody @Valid RestaurantSignUpDto dto
     ) {
         Optional<AuthEntity> auth = authService.findOneByUsername(dto.getUsername());
         Optional<RestaurantEntity> restaurant = restaurantService.findOneByBizNumber(dto.getBizNumber());

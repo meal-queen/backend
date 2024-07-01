@@ -152,7 +152,7 @@ public class RestaurantController {
     @PutMapping("/check")
     @Operation(summary = "결제 확인")
     private ResponseEntity<BasicResponse> checkPay(
-            @ModelAttribute @Valid CheckPayDto dto,
+            @RequestBody @Valid CheckPayDto dto,
             @RequestHeader("Authorization") String token
     ) {
         Optional<AuthEntity> user = authService.findOneByToken(token);

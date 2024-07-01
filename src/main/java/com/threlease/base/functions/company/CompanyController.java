@@ -72,7 +72,7 @@ public class CompanyController {
     @PostMapping("/join")
     @Operation(summary = "회사 가입", description = "회사 가입")
     private ResponseEntity<BasicResponse> join(
-            @ModelAttribute @Valid JoinCompanyDto dto,
+            @RequestBody @Valid JoinCompanyDto dto,
             @RequestHeader("Authorization") String token
     ) {
         Optional<AuthEntity> user = authService.findOneByToken(token);
@@ -124,7 +124,7 @@ public class CompanyController {
     @PostMapping("/create")
     @Operation(summary = "회사 생성", description = "회사 생성")
     private ResponseEntity<BasicResponse> createCompany(
-            @ModelAttribute @Valid CreateCompanyDto dto,
+            @RequestBody @Valid CreateCompanyDto dto,
             @RequestHeader("Authorization") String token
     ) {
         Optional<AuthEntity> user = authService.findOneByToken(token);
@@ -217,7 +217,7 @@ public class CompanyController {
     @PutMapping("/update")
     @Operation(summary = "회사 정보 수정", description = "회사 정보 수정")
     private ResponseEntity<BasicResponse> updateCompany(
-            @ModelAttribute @Valid UpdateCompanyDto dto,
+            @RequestBody @Valid UpdateCompanyDto dto,
             @RequestHeader("Authorization") String token
     ) {
         Optional<AuthEntity> user = authService.findOneByToken(token);
@@ -320,7 +320,7 @@ public class CompanyController {
     @DeleteMapping("/delete")
     @Operation(summary = "회사 삭제", description = "회사 삭제 / 주의: 포인트까지 모두 삭제 됨.")
     private ResponseEntity<BasicResponse> deleteCompany(
-            @ModelAttribute @Valid DeleteCompanyDto dto,
+            @RequestBody @Valid DeleteCompanyDto dto,
             @RequestHeader("Authorization") String token
     ) {
         Optional<AuthEntity> user = authService.findOneByToken(token);
@@ -382,7 +382,7 @@ public class CompanyController {
     @PutMapping("/user/permission")
     @Operation(summary = "권한 수정", description = "회사 내 유저 권한 수정")
     private ResponseEntity<BasicResponse> updatePermission(
-            @ModelAttribute @Valid UpdatePermissionDto dto,
+            @RequestBody @Valid UpdatePermissionDto dto,
             @RequestHeader("Authorization") String token
     ) {
         Optional<AuthEntity> user = authService.findOneByToken(token);
@@ -460,7 +460,7 @@ public class CompanyController {
     @PutMapping("/user/point")
     @Operation(summary = "포인트 지급", description = "회사 내 유저에게 포인트 지급")
     private ResponseEntity<BasicResponse> updatePoint(
-            @ModelAttribute @Valid UpdatePointDto dto,
+            @RequestBody @Valid UpdatePointDto dto,
             @RequestHeader("Authorization") String token
     ) {
         Optional<AuthEntity> user = authService.findOneByToken(token);

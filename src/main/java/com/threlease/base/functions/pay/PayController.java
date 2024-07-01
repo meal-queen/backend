@@ -31,7 +31,7 @@ public class PayController {
     @PostMapping("/")
     @Operation(summary = "결제", description = "결제")
     private ResponseEntity<BasicResponse> pay(
-            @ModelAttribute @Valid PayDto dto,
+            @RequestBody @Valid PayDto dto,
             @RequestHeader("Authorization") String token
     ) {
         Optional<AuthEntity> user = authService.findOneByToken(token);
