@@ -1,5 +1,7 @@
 package com.threlease.base.utils.moneyPin;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.squareup.okhttp.*;
 import com.threlease.base.utils.Failable;
 import com.threlease.base.utils.StringUtility;
@@ -25,12 +27,13 @@ public class MoneyPin {
 
         try {
             MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(mediaType, "{\n  " +
-                        "\"grantType\": \"ClientCredentials\",\n  " +
-                        "\"clientId\": \"" + this.client_id +"\",\n  " +
-                        "\"clientSecret\": \"" + this.client_secret + "\"\n" +
-                    "}"
-            );
+
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("grantType", "ClientCredentials");
+            jsonObject.addProperty("clientId", this.client_id);
+            jsonObject.addProperty("clientSecret", this.client_secret);
+
+            RequestBody body = RequestBody.create(mediaType, jsonObject.toString());
 
             Request request = new Request.Builder()
                     .url("https://api.moneypin.biz/bizno/v1/auth/token")
@@ -41,7 +44,9 @@ public class MoneyPin {
 
             Response response = client.newCall(request).execute();
 
-            TokenResponse token = StringUtility.stringToClass(response.body().string(), TokenResponse.class);
+            Gson gson = new Gson();
+
+            TokenResponse token = gson.fromJson(response.body().string(), TokenResponse.class);
 
             return Failable.success(
                     Token.builder()
@@ -64,12 +69,11 @@ public class MoneyPin {
 
         try {
             MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(mediaType, "{\n  " +
-                    "\"bizNoList\": [\n" +
-                    "\"" + biz + "\"" +
-                    "]\n" +
-                    "}"
-            );
+            JsonObject jsonObject = new JsonObject();
+
+            jsonObject.addProperty("bizNoList", biz);
+
+            RequestBody body = RequestBody.create(mediaType, jsonObject.toString());
 
             Request request = new Request.Builder()
                     .url("https://api.moneypin.biz/bizno/v1/biz/info/base")
@@ -80,7 +84,10 @@ public class MoneyPin {
                     .build();
 
             Response response = client.newCall(request).execute();
-            List<BizBaseInfoResponse> data = StringUtility.stringToList(response.body().string());
+
+            Gson gson = new Gson();
+
+            List<BizBaseInfoResponse> data = List.of(gson.fromJson(response.body().string(), BizBaseInfoResponse[].class));
 
             if (data.isEmpty())
                 return Failable.error("Not Found Biz");

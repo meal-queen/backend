@@ -1,5 +1,6 @@
 package com.threlease.base.utils.kakao;
 
+import com.google.gson.Gson;
 import com.squareup.okhttp.*;
 import com.threlease.base.utils.Failable;
 import com.threlease.base.utils.StringUtility;
@@ -23,8 +24,10 @@ public class KakaoMap {
                     .build();
 
             Response response = client.newCall(request).execute();
-            KakaoResponse data = StringUtility.stringToClass(response.body().string(), KakaoResponse.class);
 
+            Gson gson = new Gson();
+
+            KakaoResponse data = gson.fromJson(response.body().string(), KakaoResponse.class);
             return Failable.success(data.getDocuments().get(0).getRoad_address());
         } catch (IOException e) {
             return Failable.error(e.getMessage());
