@@ -3,7 +3,6 @@ package com.threlease.base.utils.kakao;
 import com.google.gson.Gson;
 import com.squareup.okhttp.*;
 import com.threlease.base.utils.Failable;
-import com.threlease.base.utils.StringUtility;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

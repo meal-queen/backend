@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.squareup.okhttp.*;
 import com.threlease.base.utils.Failable;
-import com.threlease.base.utils.StringUtility;
 import com.threlease.base.utils.moneyPin.response.BizBaseInfo;
 import com.threlease.base.utils.moneyPin.response.BizBaseInfoResponse;
 import com.threlease.base.utils.moneyPin.response.TokenResponse;
