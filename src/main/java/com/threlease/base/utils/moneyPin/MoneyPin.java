@@ -70,15 +70,18 @@ public class MoneyPin {
         OkHttpClient client = new OkHttpClient();
 
         try {
+            Gson gson = new Gson();
             MediaType mediaType = MediaType.parse("application/json");
-            JsonArray bizNoList = new JsonArray();
+
+            List bizNoList = new ArrayList();
 
             bizNoList.add(biz);
 
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.add("bizNoList", bizNoList);
+            InfoBaseRequest infoBaseRequest = InfoBaseRequest.builder()
+                    .bizNoList(bizNoList)
+                    .build();
 
-            RequestBody body = RequestBody.create(mediaType, jsonObject.toString());
+            RequestBody body = RequestBody.create(mediaType, gson.toJson(infoBaseRequest));
 
             Request request = new Request.Builder()
                     .url("https://api.moneypin.biz/bizno/v1/biz/info/base")
@@ -89,8 +92,6 @@ public class MoneyPin {
                     .build();
 
             Response response = client.newCall(request).execute();
-
-            Gson gson = new Gson();
 
             List<BizBaseInfoResponse> data = Arrays.stream(gson.fromJson(response.body().string(), BizBaseInfoResponse[].class)).toList();
 
