@@ -80,7 +80,7 @@ public class MoneyPin {
                     .method("POST", body)
                     .addHeader("Content-Type", "application/json")
                     .addHeader("Accept", "application/json")
-                    .addHeader("Authorization", "Bearer" + token.getValue().getToken())
+                    .addHeader("Authorization", "Bearer " + token.getValue().getToken())
                     .build();
 
             Response response = client.newCall(request).execute();
