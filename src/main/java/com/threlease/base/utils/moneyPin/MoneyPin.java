@@ -1,6 +1,7 @@
 package com.threlease.base.utils.moneyPin;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.squareup.okhttp.*;
 import com.threlease.base.utils.Failable;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -69,9 +71,12 @@ public class MoneyPin {
 
         try {
             MediaType mediaType = MediaType.parse("application/json");
-            JsonObject jsonObject = new JsonObject();
+            JsonArray bizNoList = new JsonArray();
 
-            jsonObject.addProperty("bizNoList", biz);
+            bizNoList.add(biz);
+
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.add("bizNoList", bizNoList);
 
             RequestBody body = RequestBody.create(mediaType, jsonObject.toString());
 
