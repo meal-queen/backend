@@ -2,7 +2,6 @@ package com.threlease.base.utils.moneyPin;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.squareup.okhttp.*;
 import com.threlease.base.utils.Failable;
 import com.threlease.base.utils.moneyPin.response.BizBaseInfo;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -87,21 +87,15 @@ public class MoneyPin {
 
             Gson gson = new Gson();
 
-            JsonObject responseObject = JsonParser.parseString(response.body().string()).getAsJsonObject();
+            List<BizBaseInfoResponse> data = Arrays.stream(gson.fromJson(response.body().string(), BizBaseInfoResponse[].class)).toList();
 
-            if (responseObject.has("data")) {
-                List<BizBaseInfoResponse> data = List.of(gson.fromJson(responseObject.get("data").toString(), BizBaseInfoResponse[].class));
+            if (data.isEmpty())
+                return Failable.error("Not Found Biz");
 
-                if (data.isEmpty())
-                    return Failable.error("Not Found Biz");
+            if (data.get(0).getError() != null)
+                return Failable.error(data.get(0).getError());
 
-                if (data.get(0).getError() != null)
-                    return Failable.error(data.get(0).getError());
-
-                return Failable.success(data.get(0).getInfo());
-            } else {
-                return Failable.error("Invalid response structure");
-            }
+            return Failable.success(data.get(0).getInfo());
         } catch (IOException e) {
             return Failable.error(e.getMessage());
         }
