@@ -2,6 +2,7 @@ package com.threlease.base.utils.moneyPin;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.squareup.okhttp.*;
 import com.threlease.base.utils.Failable;
 import com.threlease.base.utils.moneyPin.response.BizBaseInfo;
@@ -86,15 +87,21 @@ public class MoneyPin {
 
             Gson gson = new Gson();
 
-            List<BizBaseInfoResponse> data = List.of(gson.fromJson(response.body().string(), BizBaseInfoResponse[].class));
+            JsonObject responseObject = JsonParser.parseString(response.body().string()).getAsJsonObject();
 
-            if (data.isEmpty())
-                return Failable.error("Not Found Biz");
+            if (responseObject.has("data")) {
+                List<BizBaseInfoResponse> data = List.of(gson.fromJson(responseObject.get("data").toString(), BizBaseInfoResponse[].class));
 
-            if (data.get(0).getError() != null)
-                return Failable.error(data.get(0).getError());
+                if (data.isEmpty())
+                    return Failable.error("Not Found Biz");
 
-            return Failable.success(data.get(0).getInfo());
+                if (data.get(0).getError() != null)
+                    return Failable.error(data.get(0).getError());
+
+                return Failable.success(data.get(0).getInfo());
+            } else {
+                return Failable.error("Invalid response structure");
+            }
         } catch (IOException e) {
             return Failable.error(e.getMessage());
         }
