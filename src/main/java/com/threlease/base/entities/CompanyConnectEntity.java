@@ -4,6 +4,8 @@ import com.threlease.base.enums.AffiliationUserRoles;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Builder
@@ -20,10 +22,14 @@ public class CompanyConnectEntity {
     @Column(name = "uuid", length = 36, columnDefinition = "varchar(36)", nullable = false)
     private String uuid;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(referencedColumnName = "uuid")
     private AuthEntity author;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(referencedColumnName = "uuid")
     private CompanyEntity company;
 
     @ColumnDefault("0")

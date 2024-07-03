@@ -1,8 +1,8 @@
 package com.threlease.base.utils.moneyPin.response;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class BizBaseInfoResponse {
     private String reqBizNo;
     private BizBaseInfo info;

@@ -18,10 +18,10 @@ import java.util.List;
 
 @Service
 public class MoneyPin {
-    @Value("${moneypin:client_id}")
+    @Value("${moneypin.client_id}")
     private String client_id;
 
-    @Value("${moneypin:client_secret:}")
+    @Value("${moneypin.client_secret}")
     private String client_secret;
 
     public Failable<Token, String> generate_token() {
@@ -46,14 +46,17 @@ public class MoneyPin {
 
             Response response = client.newCall(request).execute();
 
+            if (!response.isSuccessful())
+                return Failable.error("머니핀 토큰 생성 중 오류가 발생하였습니다.");
+
             Gson gson = new Gson();
 
             TokenResponse token = gson.fromJson(response.body().string(), TokenResponse.class);
 
             return Failable.success(
                     Token.builder()
-                        .token(token.getToken())
-                        .createdAt(System.currentTimeMillis())
+                            .token(token.getToken())
+                            .createdAt(System.currentTimeMillis())
                     .build()
             );
         } catch (IOException e) {

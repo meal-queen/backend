@@ -181,6 +181,7 @@ public class AuthController {
                 .team(dto.getTeam())
                 .path(fs.getFullPath("default.webp"))
                 .name(bizInfo.getValue().getBizName())
+                .bizNumber(bizInfo.getValue().getBizNo())
                 .inviteCode(new GetRandom().run("all", 8))
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -293,6 +294,7 @@ public class AuthController {
 
         RestaurantEntity restaurantEntity = RestaurantEntity.builder()
                 .address(bizInfo.getValue().getAddress())
+                .bizNumber(bizInfo.getValue().getBizNo())
                 .x(Double.parseDouble(address.getValue().getX()))
                 .y(Double.parseDouble(address.getValue().getY()))
                 .name(bizInfo.getValue().getBizName())

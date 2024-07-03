@@ -1,8 +1,8 @@
 package com.threlease.base.utils.kakao;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class Document {
     private Address road_address;
     private String x;

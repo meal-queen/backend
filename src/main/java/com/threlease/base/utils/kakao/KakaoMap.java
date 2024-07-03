@@ -19,15 +19,23 @@ public class KakaoMap {
         try {
             Request request = new Request.Builder()
                     .url("https://dapi.kakao.com/v2/local/search/address.json?query=" + address)
-                    .addHeader("Authorization", "KAKAOAK " + this.restApi)
+                    .addHeader("Authorization", "KakaoAK " + this.restApi)
                     .build();
 
             Response response = client.newCall(request).execute();
 
+            if (!response.isSuccessful())
+                return Failable.error("해당 사업자의 위치를 가져오는데 실패하였습니다.");
+
             Gson gson = new Gson();
 
             KakaoResponse data = gson.fromJson(response.body().string(), KakaoResponse.class);
-            return Failable.success(data.getDocuments().get(0).getRoad_address());
+
+            if (data.getDocuments() != null && !data.getDocuments().isEmpty()) {
+                return Failable.success(data.getDocuments().get(0).getRoad_address());
+            } else {
+                return Failable.error("주소 데이터가 비어있습니다.");
+            }
         } catch (IOException e) {
             return Failable.error(e.getMessage());
         }

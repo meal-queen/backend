@@ -1,8 +1,8 @@
 package com.threlease.base.utils.kakao;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class Address {
     private String address_name;
     private String x;

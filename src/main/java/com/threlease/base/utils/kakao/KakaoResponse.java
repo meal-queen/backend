@@ -1,11 +1,10 @@
 package com.threlease.base.utils.kakao;
 
-import lombok.Data;
+import lombok.Getter;
 
 import java.util.List;
 
-@Data
+@Getter
 public class KakaoResponse {
     private List<Document> documents;
-    private Object meta;
 }
